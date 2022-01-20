@@ -6,7 +6,40 @@ Game::Game() :
 	m_exitGame{ false }
 {
 	setupFontAndText(); // load font 
-	std::cout << fuzzy.Defuzzify(8, 23) << std::endl;
+	srand(time(NULL));
+
+	sf::CircleShape circleShape;
+	circleShape.setRadius(10.0f);
+	circleShape.setFillColor(sf::Color::Red);
+
+	for (int i = 0; i < 30; i++)
+	{
+		m_enemiesUnits.push_back(circleShape);
+	}
+
+	circleShape.setFillColor(sf::Color::Green);
+
+	int row = 0, col = 0;
+
+	for (int i = 0; i < 50; i++)
+	{
+		if (col >= 10)
+		{
+			row++;
+			col = 0;
+			circleShape.setPosition(250.0f + col * 25.0f, 0.0f + row * 25.0f);
+		}
+		if (col < 10)
+		{
+			circleShape.setPosition(250.0f + col * 25.0f, 25.0f + row * 25.0f);
+			col++;
+		}
+		m_aiUnits.push_back(circleShape);
+	}
+
+	SetUpEnemies();
+	SetUpAiResponse();
+
 }
 
 /// <summary>
@@ -62,6 +95,14 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		if (sf::Event::MouseButtonPressed == newEvent.type)
+		{
+			if (sf::Mouse::Left == newEvent.key.code)
+			{
+				SetUpEnemies();
+				SetUpAiResponse();
+			}
+		}
 	}
 }
 
@@ -96,7 +137,17 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::Black);
-	
+	m_window.draw(m_message);
+
+	for (int i = 0; i < m_deploy; i++)
+	{
+		m_window.draw(m_aiUnits[i]);
+	}
+
+	for (int i = 0; i < m_enemySize; i++)
+	{
+		m_window.draw(m_enemiesUnits[i]);
+	}
 
 	m_window.display();
 }
@@ -107,4 +158,42 @@ void Game::setupFontAndText()
 	{
 		std::cout << "problem loading arial black font" << std::endl;
 	}
+
+	m_message.setFont(m_ArialBlackfont);
+	m_message.setPosition(150.0f, 250.0f);
+	m_message.setCharacterSize(18);
+	m_message.setString("");
+	m_message.setFillColor(sf::Color::White);
+}
+
+void Game::SetUpEnemies()
+{
+	m_enemySize = rand() % 30 + 1;
+	m_enemyDistance = rand() % 70 + 1;
+
+	int row = 0, col = 0;
+
+	for (int i = 0; i < m_enemySize; i++)
+	{
+		if (col >= 10)
+		{
+			row++;
+			col = 0;
+			m_enemiesUnits[i].setPosition(250.0f + col * 25.0f, 300.f + m_enemyDistance * 3.0f + row * 25.0f);
+		}
+		if (col < 10)
+		{
+			m_enemiesUnits[i].setPosition(250.0f + col * 25.0f, 300.f + m_enemyDistance * 3.0f + row * 25.0f);
+			col++;
+		}
+	}
+}
+
+void Game::SetUpAiResponse()
+{
+	m_deploy = m_fuzzy.Defuzzify(m_enemySize, m_enemyDistance);
+	std::cout << m_deploy << std::endl;
+	std::string str = "The enemy army has a size of: " + std::to_string(m_enemySize) + " and is: " 
+		+ std::to_string(m_enemyDistance) + " units away. \n Ai deployed: " + std::to_string(m_deploy) + " units.";
+	m_message.setString(str);
 }

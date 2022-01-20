@@ -29,8 +29,18 @@ private:
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
+	sf::Text m_message;
 	bool m_exitGame; // control exiting game
-	Rules fuzzy;
+	Rules m_fuzzy;
+
+	void SetUpEnemies();
+	void SetUpAiResponse();
+	int m_deploy;
+	int m_enemySize;
+	int m_enemyDistance;
+
+	std::vector<sf::CircleShape> m_enemiesUnits;
+	std::vector<sf::CircleShape> m_aiUnits;
 };
 
 #endif // !GAME_HPP
