@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="include\Fuzzy.h" />
     <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\Rules.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Fuzzy.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Rules.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

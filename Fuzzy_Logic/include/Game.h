@@ -6,6 +6,7 @@
 /// Don't forget the endif at the bottom
 /// </summary>
 #include <SFML/Graphics.hpp>
+#include "Rules.h"
 
 class Game
 {
@@ -29,6 +30,7 @@ private:
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
 	bool m_exitGame; // control exiting game
+	Rules fuzzy;
 };
 
 #endif // !GAME_HPP

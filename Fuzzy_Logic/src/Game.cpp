@@ -6,6 +6,7 @@ Game::Game() :
 	m_exitGame{ false }
 {
 	setupFontAndText(); // load font 
+	std::cout << fuzzy.Defuzzify(8, 23) << std::endl;
 }
 
 /// <summary>
